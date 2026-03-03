@@ -1,0 +1,92 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  background: transparent;
+  backdrop-filter: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  z-index: 100;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.navbar-clock {
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 7px;
+  transition: background 0.2s;
+}
+
+.navbar-clock:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.navbar-time {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #f9fafb;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.5px;
+}
+
+.navbar-date {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-btn {
+  padding: 7px 16px;
+  border-radius: 7px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.06);
+  color: #d1d5db;
+}
+
+.nav-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #f9fafb;
+}
+
+.nav-btn-outline {
+  background: transparent;
+  border-color: rgba(99, 102, 241, 0.5);
+  color: #818cf8;
+}
+
+.nav-btn-outline:hover {
+  background: rgba(99, 102, 241, 0.1);
+  border-color: #818cf8;
+  color: #a5b4fc;
+}
+
+.nav-btn-danger {
+  background: transparent;
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #f87171;
+}
+
+.nav-btn-danger:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: #f87171;
+}

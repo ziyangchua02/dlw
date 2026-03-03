@@ -51,6 +51,7 @@ function SignUp() {
 
       const displayName = user?.user_metadata?.full_name || name || email
       const state = { id: user?.id, name: displayName, email: user?.email, role }
+      sessionStorage.setItem('dlw_user', JSON.stringify(state))
 
       if (role === 'teacher') {
         navigate('/teacher/dashboard', { state })

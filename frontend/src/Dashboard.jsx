@@ -28,8 +28,14 @@ const FALLBACK_STATS = {
 const CHART_COLORS = ['#6366f1', '#a78bfa', '#34d399', '#f59e0b', '#f87171', '#38bdf8']
 
 function Dashboard() {
-  const { state } = useLocation()
+  const { state: routeState } = useLocation()
   const navigate = useNavigate()
+
+  // Persist session across page refreshes via sessionStorage
+  const state = routeState || (() => {
+    try { return JSON.parse(sessionStorage.getItem('dlw_user') || 'null') } catch { return null }
+  })()
+
   const rawName = state?.name || state?.email || 'there'
   const name = rawName.includes('@') ? rawName.split('@')[0] : rawName
 

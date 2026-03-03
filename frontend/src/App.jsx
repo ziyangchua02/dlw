@@ -44,6 +44,7 @@ function Login() {
       })
 
       const state = { id: user?.id, name, email: user?.email, role }
+      sessionStorage.setItem('dlw_user', JSON.stringify(state))
       if (role === 'teacher') {
         navigate('/teacher/dashboard', { state })
       } else {

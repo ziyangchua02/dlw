@@ -157,13 +157,17 @@ function AssignmentUpload({ itemId, moduleCode, userId, onSubmitted }) {
     setStatus('done')
   }
 
-  // Check on mount whether this item already has a submission + quiz
+  // Check on mount whether this item already has a submission + grade + quiz
   useEffect(() => {
     fetch(`${API}/api/submissions?item_id=${itemId}`)
       .then(r => r.json())
       .then(data => {
         if (data) {
           setStatus('done')
+          // Restore grade if it was persisted
+          if (data.grade_percentage != null) {
+            setGradeResult({ percentage: data.grade_percentage, feedback: data.grade_feedback })
+          }
           // Check if a quiz bank already exists
           if (userId) {
             fetch(`${API}/api/quiz/bank?item_id=${itemId}&student_id=${userId}`)
@@ -301,10 +305,15 @@ function ModuleDetail() {
   const { code } = useParams()
   const navigate = useNavigate()
   const location = useLocation()
-  const userId = location.state?.id
+
+  // Restore session from sessionStorage if router state was lost on refresh
+  const locState = location.state || (() => {
+    try { return JSON.parse(sessionStorage.getItem('dlw_user') || 'null') } catch { return null }
+  })()
+  const userId = locState?.id
   // Use static meta if available, otherwise fall back to catalogue data passed via nav state
-  const mod = MODULE_META[code] || (location.state?.moduleName
-    ? { name: location.state.moduleName, color: location.state.moduleColor || '#6366f1', stats: [0,0,0,0,0,0], mastery: 0 }
+  const mod = MODULE_META[code] || (locState?.moduleName
+    ? { name: locState.moduleName, color: locState.moduleColor || '#6366f1', stats: [0,0,0,0,0,0], mastery: 0 }
     : null)
 
   const [items, setItems] = useState([])
@@ -348,7 +357,7 @@ function ModuleDetail() {
 
           {/* Header */}
           <div className="md-header">
-            <button className="md-back" onClick={() => navigate('/dashboard', { state: location.state })}>← Dashboard</button>
+            <button className="md-back" onClick={() => navigate('/dashboard', { state: locState })}>← Dashboard</button>
             <div className="md-title-block">
               <span className="md-code" style={{ color: mod.color }}>{code}</span>
               <h1 className="md-title">{mod.name}</h1>

@@ -339,6 +339,16 @@ Respond ONLY with valid JSON in this exact format:
     // Strip markdown code fences if present
     const jsonStr = raw.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/```\s*$/, '').trim()
     const result = JSON.parse(jsonStr)
+
+    // Persist grade back onto the student's submission row
+    const { error: updateErr } = await supabaseAdmin
+      .from('submissions')
+      .update({ grade_percentage: result.percentage, grade_feedback: result.feedback })
+      .eq('item_id', Number(item_id))
+      .eq('is_sample', false)
+
+    if (updateErr) console.error('[grade] failed to persist grade:', updateErr.message)
+
     return res.json({
       percentage: result.percentage,
       feedback: result.feedback,

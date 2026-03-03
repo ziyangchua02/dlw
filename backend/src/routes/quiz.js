@@ -94,9 +94,8 @@ ${(student_text || '').slice(0, 2500)}`
 
   if (bankErr) return res.status(500).json({ error: bankErr.message })
 
-  // Create first review session (due tomorrow)
-  const tomorrow = new Date()
-  tomorrow.setDate(tomorrow.getDate() + 1)
+  // Create first review session (due today so it appears on the dashboard immediately)
+  const today = new Date().toISOString().split('T')[0]
 
   const { error: sessionErr } = await supabaseAdmin
     .from('review_sessions')
@@ -106,7 +105,7 @@ ${(student_text || '').slice(0, 2500)}`
       item_id: Number(item_id),
       module_code,
       topic,
-      next_due: tomorrow.toISOString().split('T')[0],
+      next_due: today,
       interval_index: 0,  // index into SR_INTERVALS
     }])
 

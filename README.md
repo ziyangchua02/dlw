@@ -43,7 +43,7 @@ A full-stack AI-powered student learning platform built with React, Node.js and 
 ### 1. Install dependencies
 
 ```bash
-cd backend && npm install
+cd ../backend && npm install
 cd ../frontend && npm install
 ```
 
@@ -69,7 +69,7 @@ VITE_SUPABASE_ANON_KEY=your_anon_key
 
 ```bash
 # Terminal 1 — backend
-cd backend && node server.js
+cd backend && npm run dev
 
 # Terminal 2 — frontend
 cd frontend && npm run dev

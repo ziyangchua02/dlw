@@ -32,9 +32,10 @@ function Dashboard() {
   const navigate = useNavigate()
 
   // Persist session across page refreshes via sessionStorage
-  const state = routeState || (() => {
+  const [state] = useState(() => {
+    if (routeState?.id) return routeState
     try { return JSON.parse(sessionStorage.getItem('dlw_user') || 'null') } catch { return null }
-  })()
+  })
 
   const rawName = state?.name || state?.email || 'there'
   const name = rawName.includes('@') ? rawName.split('@')[0] : rawName
@@ -101,8 +102,11 @@ function Dashboard() {
     if (!userId) return
     fetch(`${API}/api/quiz/due?student_id=${userId}`)
       .then(r => r.json())
-      .then(data => { if (Array.isArray(data)) setDueSessions(data) })
-      .catch(() => {})
+      .then(data => {
+        console.log('[quiz/due] sessions:', data)
+        if (Array.isArray(data)) setDueSessions(data)
+      })
+      .catch(err => console.error('[quiz/due] error:', err))
   }, [state?.id])
 
   useEffect(() => {

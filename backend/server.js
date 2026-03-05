@@ -11,8 +11,24 @@ import quizRoutes from './src/routes/quiz.js'
 const app = express()
 const PORT = process.env.PORT || 3001
 
+const allowedOrigins = [
+  /^http:\/\/localhost(:\d+)?$/,          // local dev
+  /^https:\/\/.*\.vercel\.app$/,          // any Vercel deployment
+  /^https:\/\/.*\.up\.railway\.app$/,     // Railway preview URLs
+]
+if (process.env.FRONTEND_URL) {
+  allowedOrigins.push(process.env.FRONTEND_URL)  // explicit prod domain
+}
+
 app.use(cors({
-  origin: /^http:\/\/localhost(:\d+)?$/,
+  origin: (origin, callback) => {
+    // Allow requests with no origin (e.g. curl, Postman, same-origin)
+    if (!origin) return callback(null, true)
+    if (allowedOrigins.some(p => (typeof p === 'string' ? p === origin : p.test(origin)))) {
+      return callback(null, true)
+    }
+    callback(new Error(`CORS: origin ${origin} not allowed`))
+  },
   credentials: true,
 }))
 app.use(express.json())
